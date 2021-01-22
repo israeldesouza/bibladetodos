@@ -145,7 +145,7 @@
                     <ng-template #comentarioMob>
                         <a nzTooltipTitle="Comentário" nzTooltipPlacement="top" nz-tooltip
                             (click)="verse.hasComment = !verse.hasComment; salvarLivro()">
-                            <nz-badge nzDot [nzShowDot]="(verse.comment) ? ((verse.comment.length > 0) ? true : false) : false">
+                            <nz-badge nzDot [nzShowDot]="(verse.comment) ? true : false">
                                 <i nz-icon nzType="comment" nzTheme="outline"></i>
                             </nz-badge>
                         </a>
@@ -223,7 +223,7 @@
                     <a nzTooltipTitle="Comentário" nzTooltipPlacement="top" nz-tooltip
                         (click)="livro.chapters[indexCapituloLivroSelesionado ][indexVersiculoSelesionado].hasComment = !livro.chapters[indexCapituloLivroSelesionado ][indexVersiculoSelesionado].hasComment; salvarLivro()">
                         <nz-badge nzDot
-                            [nzShowDot]="livro.chapters[indexCapituloLivroSelesionado ][indexVersiculoSelesionado].comment.length > 0">
+                            [nzShowDot]="livro.chapters[indexCapituloLivroSelesionado ][indexVersiculoSelesionado].comment">
                             <i nz-icon nzType="comment" nzTheme="outline"></i>
                         </nz-badge>
                     </a>
