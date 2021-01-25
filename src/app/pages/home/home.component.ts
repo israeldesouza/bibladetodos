@@ -151,7 +151,6 @@ export class HomeComponent implements OnInit {
     @HostListener('document:keydown', ['$event'])
     keyPress(event: any){
 
-
         if(this.versiculoSelecionado != 'Todos' && event.key == 'ArrowRight') {
             let indexVerso = this.indexVersiculoSelesionado + 1;
             const quantidadeVesiculos = this.livro.chapters[this.indexCapituloLivroSelesionado].length;
