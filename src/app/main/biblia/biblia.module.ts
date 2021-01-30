@@ -11,17 +11,15 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 
-import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
+import { BibliaComponent } from './biblia.component';
 
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        HomeRoutingModule,
 
         NzGridModule,
         NzSelectModule,
@@ -32,13 +30,13 @@ import { HomeComponent } from './home.component';
         NzBadgeModule,
         NzCommentModule,
         NzCardModule,
-        NzSpinModule
+        NzBackTopModule
     ],
     declarations: [
-        HomeComponent
+        BibliaComponent
     ],
     exports: [
-        HomeComponent
+        BibliaComponent
     ]
 })
-export class HomeModule { }
+export class BibliaModule { }

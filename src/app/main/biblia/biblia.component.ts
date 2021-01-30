@@ -1,19 +1,17 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Biblia } from '../biblia/biblia';
+import { Biblia } from '../biblia-json/biblia';
 
 
-import { BibliaService } from '../biblia/biblia.service';
-import { Capitulos, MenuBiblia } from '../biblia/menu-biblia';
+import { BibliaService } from '../biblia-json/biblia.service';
+import { Capitulos, MenuBiblia } from '../biblia-json/menu-biblia';
 import { OnChangeScreenSizeService } from '../on-change-screen-size/on-change-screen-size.service';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.less']
+    templateUrl: './biblia.component.html',
+    styleUrls: ['./biblia.component.less']
 })
-export class HomeComponent implements OnInit {
+export class BibliaComponent implements OnInit {
 
-    isSpinning: boolean = true;
     innerWidth: number = 0;
     livrosMenu: MenuBiblia[] = [];
     livroSelecionado: string = 'Gênesis';
@@ -24,6 +22,8 @@ export class HomeComponent implements OnInit {
     ultimoLivro: any;
     fontSize: string = 'Médio';
     styleSizeFont: string = 'medium';
+    textoSizeSelector: string = 'medium';
+    sizeSelector: any = 'default';
 
     indexLivroSelesionado: number = 0;
     indexCapituloLivroSelesionado: number = 0;
@@ -108,7 +108,6 @@ export class HomeComponent implements OnInit {
         indexDoCapitulo++;
         this.capituloSelecionado = indexDoCapitulo.toString();
         this.versiculoSelecionado = 'Todos';
-        this.isSpinning = false;
         this.salvarUltimolivro();
     }
 
@@ -131,16 +130,20 @@ export class HomeComponent implements OnInit {
     trocarTamanhoFont(event: string) {
         switch (event) {
             case 'Pequeno':
-                this.styleSizeFont = 'small'
+                this.styleSizeFont = 'small';
+                this.sizeSelector = 'small';
+                this.textoSizeSelector = 'small';
                 break;
             case 'Médio':
-                this.styleSizeFont = 'medium'
+                this.styleSizeFont = 'medium';
+                this.textoSizeSelector = 'medium';
+                this.sizeSelector = 'default';
                 break;
             case 'Grande':
-                this.styleSizeFont = 'large'
+                this.styleSizeFont = 'large';
                 break;
             case 'Extra Grande':
-                this.styleSizeFont = 'x-large'
+                this.styleSizeFont = 'x-large';
                 break;
 
             default:
@@ -174,7 +177,7 @@ export class HomeComponent implements OnInit {
     salvarLivro() {
         this.bibliaService
             .saveLivroLocal(this.livro)
-            .subscribe(res => this.isSpinning = false);
+            .subscribe(res => {});
     }
 
     salvarUltimolivro() {

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { of } from "rxjs/internal/observable/of";
 
-import *  as menuBiblia from '../biblia/menuBiblia.json';
-import *  as biblia from '../biblia/biblia.json';
+import *  as menuBiblia from './menuBiblia.json';
+import *  as biblia from './biblia.json';
 import { Biblia } from "./biblia";
 import { MenuBiblia } from "./menu-biblia";
 import { Observable } from "rxjs";
