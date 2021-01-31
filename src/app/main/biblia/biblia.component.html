@@ -1,42 +1,6 @@
-<div *ngIf="!fullScreen" #divTarget>
-    <div class="div-selecao">
-        <span class="livro-title" [ngStyle]="{'font-size': textoSizeSelector}">Livro: </span><br />
-        <nz-select class="livro" nzShowSearch [nzSize]="sizeSelector" [(ngModel)]="livroSelecionado"
-            (ngModelChange)="bookChange($event)">
-            <nz-option *ngFor="let l of livrosMenu" [nzLabel]="l.livro" [nzValue]="l.livro"></nz-option>
-        </nz-select>
-    </div>
-    <div class="div-selecao">
-        <span class="livro-title" [ngStyle]="{'font-size': textoSizeSelector}">Capítulo: </span><br />
-        <nz-select class="capitulo" [nzSize]="sizeSelector" [(ngModel)]="capituloSelecionado"
-            (ngModelChange)="trocarCapitulo($event)">
-            <ng-container *ngFor="let c of capitolos; let i = index;">
-                <nz-option [nzLabel]="converterParaString(i)" [nzValue]="converterParaString(i)"></nz-option>
-            </ng-container>
-        </nz-select>
-    </div>
-    <div class="div-selecao">
-        <span class="livro-title" [ngStyle]="{'font-size': textoSizeSelector}">Versículo: </span><br />
-        <nz-select class="versiculo" [nzSize]="sizeSelector" [(ngModel)]="versiculoSelecionado"
-            (ngModelChange)="trocarVersiculo($event)">
-            <nz-option nzLabel="Todos" nzValue="Todos"></nz-option>
-            <nz-option *ngFor="let v of versiculos" [nzLabel]="converterParaString(v)"
-                [nzValue]="converterParaString(v)"></nz-option>
-        </nz-select>
-    </div>
-    <div class="div-selecao">
-        <span class="livro-title" [ngStyle]="{'font-size': textoSizeSelector}">Tamanho do texto: </span><br />
-        <nz-select class="fontSize" [nzSize]="sizeSelector" [(ngModel)]="fontSize"
-            (ngModelChange)="trocarTamanhoFont($event)">
-            <nz-option nzLabel="Pequeno" nzValue="Pequeno"></nz-option>
-            <nz-option nzLabel="Médio" nzValue="Médio"></nz-option>
-            <nz-option nzLabel="Grande" nzValue="Grande"></nz-option>
-            <nz-option nzLabel="Extra Grande" nzValue="Extra Grande"></nz-option>
-        </nz-select>
-    </div>
-</div>
+<!--
 
-<div class="all-verses" *ngIf="(versiculoSelecionado == 'Todos') && (!fullScreen)">
+<div class="all-verses" *ngIf="(versiculoSelecionado == 'Versículos') && (!fullScreen)">
     <span [ngStyle]="{'font-size': styleSizeFont}" nz-typography>{{livro.name}} Cap:{{indexCapituloLivroSelesionado +
         1}}</span>
     <nz-comment>
@@ -154,14 +118,14 @@
     </nz-list>
 </div>
 
-<div class="all-verses" *ngIf="versiculoSelecionado != 'Todos'">
+<div class="all-verses" *ngIf="versiculoSelecionado != 'Versículos'">
     <nz-card [ngClass]="fullScreen ? 'overlay': ''" [ngStyle]="{'font-size': styleSizeFont}"
         [nzActions]="[setaEsquerda, lembrete, marcarTexto, comentario, fullScreenTpl, setaDireita]">
 
         <div [ngClass]="fullScreen ? 'div-versos-full-screen': 'div-versos' ">
             <span [ngStyle]="{'font-size': styleSizeFont}" nz-typography>
                 {{livro.name}}, Cap: {{indexCapituloLivroSelesionado + 1}}-
-                Versículo:
+                Versículos:
                 <nz-badge nzDot
                     [nzShowDot]="livro.chapters[indexCapituloLivroSelesionado ][indexVersiculoSelesionado]?.reminder">
                     <span [ngStyle]="{'font-size': styleSizeFont}">{{versiculoSelecionado }}</span>
@@ -245,4 +209,67 @@
     </nz-card>
 </div>
 
-<nz-back-top nzTarget="divTarget"></nz-back-top>
+<nz-back-top nzTarget="divTarget"></nz-back-top> -->
+
+<nz-layout>
+    <nz-header>
+        <div class="div-header">
+            <div class="div-selecao">
+                <nz-select class="livro" nzShowSearch nzSize="small" [(ngModel)]="livroSelecionado"
+                    (ngModelChange)="bookChange($event)">
+                    <nz-option *ngFor="let l of livrosMenu" [nzLabel]="l.livro" [nzValue]="l.livro"></nz-option>
+                </nz-select>
+            </div>
+
+            <div class="div-selecao">
+                <nz-select class="capitulo" nzSize="small" [(ngModel)]="capituloSelecionado"
+                    (ngModelChange)="trocarCapitulo($event)">
+                    <ng-container *ngFor="let c of capitolos; let i = index;">
+                        <nz-option nzLabel="C: {{converterParaString(i)}}" [nzValue]="converterParaString(i)">
+                        </nz-option>
+                    </ng-container>
+                </nz-select>
+            </div>
+        <!-- mostrar so quando estiver no modo para visualizar o versiculo
+            <div class="div-selecao">
+                <nz-select class="versiculo" nzSize="small" [(ngModel)]="versiculoSelecionado"
+                    (ngModelChange)="trocarVersiculo($event)">
+                    <nz-option nzLabel="Versículos" nzValue="Versículos"></nz-option>
+                    <nz-option *ngFor="let v of versiculos" nzLabel="V: {{converterParaString(v)}}"
+                        [nzValue]="converterParaString(v)"></nz-option>
+                </nz-select>
+            </div>
+        -->
+
+            <div class="icon-menu" (click)="modalConfig = true">
+                <i nz-icon nzType="setting" nzTheme="outline"></i>
+            </div>
+            <nz-modal [(nzVisible)]="modalConfig" (nzOnCancel)="modalConfig = false" [nzFooter]="null">
+                <ng-container *nzModalContent>
+                    <div class="content-modal">
+                        <span class="livro-title">Tamanho do texto: </span>
+                        <nz-select class="fontSize" nzSize="small" [(ngModel)]="fontSize"
+                            (ngModelChange)="trocarTamanhoFont($event)">
+                            <nz-option nzLabel="Pequeno" nzValue="Pequeno"></nz-option>
+                            <nz-option nzLabel="Médio" nzValue="Médio"></nz-option>
+                            <nz-option nzLabel="Grande" nzValue="Grande"></nz-option>
+                            <nz-option nzLabel="Extra Grande" nzValue="Extra Grande"></nz-option>
+                        </nz-select>
+                    </div>
+                </ng-container>
+            </nz-modal>
+        </div>
+    </nz-header>
+    <nz-content class="content" #divTarget>
+        <div *ngFor="let verse of livro.chapters[indexCapituloLivroSelesionado]; let i = index;" [ngStyle]="{'font-size': styleSizeFont}">
+            <span>
+                {{i + 1 }} - {{verse.verse}}
+            </span>
+        </div>
+        <nz-back-top [nzTemplate]="tplBackTop" nzTarget="divTarget"></nz-back-top>
+        <ng-template #tplBackTop>
+            <div class="ant-back-top-inner"><i nz-icon nzType="vertical-align-top" nzTheme="outline"></i></div>
+        </ng-template>
+    </nz-content>
+    <nz-footer></nz-footer>
+</nz-layout>

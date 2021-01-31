@@ -1,29 +1,4 @@
-.livro-title {
-    font-weight: 600;
-    font-size: small;
-    margin-right: 8px;
-}
 
-.div-selecao {
-    display: inline-block;
-    margin-right: 1rem;
-}
-
-.livro {
-    width: 150px;
-}
-
-.capitulo {
-    width: 70px;
-}
-
-.versiculo {
-    width: 90px;
-}
-
-.fontSize {
-    width: 135px;
-}
 
 .number-verse {
     font-weight: 600;
@@ -86,6 +61,83 @@
     right: 0;
     bottom: 0;
     padding: 1rem;
+}
+
+//////////////////////////////////////
+
+.ant-layout-header {
+    height: 42px;
+    padding: .5rem;
+    line-height: 15px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+
+    .div-selecao {
+        display: inline-block;
+        margin-right: .5rem;
+    }
+
+    .livro {
+        width: 180px;
+    }
+
+    .capitulo {
+        width: 90px;
+    }
+
+    .versiculo {
+        width: 80px;
+    }
+
+    .livro-title {
+        font-weight: 500;
+    }
+
+    .icon-menu {
+        width: 15px;
+        color: #ffffff;
+        cursor: pointer;
+        float: right;
+        margin-top: 4px;
+    }
+}
+
+
+.content-modal {
+    padding: 1rem .5rem;
+}
+
+.fontSize {
+    width: 100%;
+}
+
+.content {
+    padding: 3rem 1rem;
+    min-height: 100vh;
+}
+
+.ant-layout-footer {
+    height: 42px;
+    padding: .5rem;
+    line-height: 15px;
+    background: #001529;
+
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+:host ::ng-deep .ant-back-top-inner {
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.45);
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
 }
 
 

@@ -13,6 +13,9 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+
 import { BibliaComponent } from './biblia.component';
 
 
@@ -30,7 +33,10 @@ import { BibliaComponent } from './biblia.component';
         NzBadgeModule,
         NzCommentModule,
         NzCardModule,
-        NzBackTopModule
+        NzBackTopModule,
+
+        NzLayoutModule,
+        NzModalModule
     ],
     declarations: [
         BibliaComponent

@@ -16,14 +16,15 @@ export class BibliaComponent implements OnInit {
     livrosMenu: MenuBiblia[] = [];
     livroSelecionado: string = 'Gênesis';
     capituloSelecionado: string = '1';
-    versiculoSelecionado: string = 'Todos';
+    versiculoSelecionado: string = 'Versículos';
     capitolos: Array<Capitulos> = [];
     versiculos: Array<any> = [];
     ultimoLivro: any;
     fontSize: string = 'Médio';
     styleSizeFont: string = 'medium';
     textoSizeSelector: string = 'medium';
-    sizeSelector: any = 'default';
+    sizeSelector: any = 'small';
+    modalConfig: boolean = false;
 
     indexLivroSelesionado: number = 0;
     indexCapituloLivroSelesionado: number = 0;
@@ -107,7 +108,7 @@ export class BibliaComponent implements OnInit {
 
         indexDoCapitulo++;
         this.capituloSelecionado = indexDoCapitulo.toString();
-        this.versiculoSelecionado = 'Todos';
+        this.versiculoSelecionado = 'Versículos';
         this.salvarUltimolivro();
     }
 
@@ -115,6 +116,7 @@ export class BibliaComponent implements OnInit {
         index--;
         this.indexCapituloLivroSelesionado = index;
         this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[this.indexCapituloLivroSelesionado].versesNumber;
+        this.versiculoSelecionado = 'Versículos';
 
         this.salvarUltimolivro();
     }
@@ -154,7 +156,7 @@ export class BibliaComponent implements OnInit {
     @HostListener('document:keydown', ['$event'])
     keyPress(event: any){
 
-        if(this.versiculoSelecionado != 'Todos' && event.key == 'ArrowRight') {
+        if(this.versiculoSelecionado != 'Versículos' && event.key == 'ArrowRight') {
             let indexVerso = this.indexVersiculoSelesionado + 1;
             const quantidadeVesiculos = this.livro.chapters[this.indexCapituloLivroSelesionado].length;
             if(indexVerso >= quantidadeVesiculos) return;
@@ -162,7 +164,7 @@ export class BibliaComponent implements OnInit {
             this.versiculoSelecionado = (indexVerso + 1).toString();
             this.indexVersiculoSelesionado = indexVerso;
 
-        } else if(this.versiculoSelecionado != 'Todos' && event.key == 'ArrowLeft') {
+        } else if(this.versiculoSelecionado != 'Versículos' && event.key == 'ArrowLeft') {
 
             let indexVersoDiminuir = this.indexVersiculoSelesionado - 1;
 
