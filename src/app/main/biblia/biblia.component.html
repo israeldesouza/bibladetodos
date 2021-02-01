@@ -225,7 +225,7 @@
                 <nz-select class="capitulo" nzSize="small" [(ngModel)]="capituloSelecionado"
                     (ngModelChange)="trocarCapitulo($event)">
                     <ng-container *ngFor="let c of capitolos; let i = index;">
-                        <nz-option nzLabel="C: {{converterParaString(i)}}" [nzValue]="converterParaString(i)">
+                        <nz-option nzLabel="Cap: {{converterParaString(i)}}" [nzValue]="converterParaString(i)">
                         </nz-option>
                     </ng-container>
                 </nz-select>
@@ -261,8 +261,15 @@
         </div>
     </nz-header>
     <nz-content class="content" #divTarget>
-        <div *ngFor="let verse of livro.chapters[indexCapituloLivroSelesionado]; let i = index;" [ngStyle]="{'font-size': styleSizeFont}">
-            <span>
+        <div class="div-verse"
+            *ngFor="let verse of livro.chapters[indexCapituloLivroSelesionado]; let i = index;">
+
+            <div class="actions">
+                <i nz-icon nzType="tag" nzTheme="outline"></i>
+                <i nz-icon nzType="highlight" nzTheme="outline"></i>
+                <i nz-icon nzType="comment" nzTheme="outline"></i>
+            </div>
+            <span [ngStyle]="{'font-size': styleSizeFont}">
                 {{i + 1 }} - {{verse.verse}}
             </span>
         </div>

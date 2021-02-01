@@ -118,6 +118,7 @@ export class BibliaComponent implements OnInit {
         this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[this.indexCapituloLivroSelesionado].versesNumber;
         this.versiculoSelecionado = 'Versículos';
 
+        window.scroll(0,0);
         this.salvarUltimolivro();
     }
 
