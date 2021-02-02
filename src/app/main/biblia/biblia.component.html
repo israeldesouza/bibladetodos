@@ -255,6 +255,12 @@
                             <nz-option nzLabel="Grande" nzValue="Grande"></nz-option>
                             <nz-option nzLabel="Extra Grande" nzValue="Extra Grande"></nz-option>
                         </nz-select>
+
+                        <div class="div-show-comments">
+                            <p class="livro-title">Exibir comentários: &nbsp;
+                                <nz-switch nzSize="small" [(ngModel)]="showComments"></nz-switch>
+                            </p>
+                        </div>
                     </div>
                 </ng-container>
             </nz-modal>
@@ -264,14 +270,29 @@
         <div class="div-verse"
             *ngFor="let verse of livro.chapters[indexCapituloLivroSelesionado]; let i = index;">
 
-            <div class="actions">
-                <i nz-icon nzType="tag" nzTheme="outline"></i>
-                <i nz-icon nzType="highlight" nzTheme="outline"></i>
-                <i nz-icon nzType="comment" nzTheme="outline"></i>
+            <div class="icon-tag" *ngIf="verse.reminder">
+                <i nz-icon nzType="tag" nzTheme="fill" [nzRotate]="45"></i>
             </div>
-            <span [ngStyle]="{'font-size': styleSizeFont}">
-                {{i + 1 }} - {{verse.verse}}
+
+            <span [ngStyle]="{'font-size': styleSizeFont, 'background-color': (verse.highlight) ? '#ffec3d' : ''}">
+                {{i + 1 }} - {{verse.verse}}&nbsp;
             </span>
+
+            <div class="actions">
+                <i nz-typography nzCopyable nzCopyText="{{livro.name}} Cap: {{indexCapituloLivroSelesionado + 1}}, Ver: {{i + 1 }} - {{verse.verse}}"></i>
+                <i nz-icon nzType="tag" nzTheme="outline" (click)="verse.reminder = !verse.reminder; salvarLivro()"></i>
+                <i nz-icon nzType="highlight" nzTheme="outline" (click)="verse.highlight = !verse.highlight; salvarLivro()"></i>
+            </div>
+
+            <div class="div-comment" *ngIf="showComments">
+                <span nz-typography nzType="secondary">Comentário: &nbsp;</span>
+                <span
+                    nz-typography nzType="secondary"
+                    nzEditable
+                    [(nzContent)]="verse.comment"
+                    (nzContentChange)="salvarLivro()">
+                </span>
+            </div>
         </div>
         <nz-back-top [nzTemplate]="tplBackTop" nzTarget="divTarget"></nz-back-top>
         <ng-template #tplBackTop>

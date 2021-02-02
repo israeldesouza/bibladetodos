@@ -102,6 +102,10 @@
 
 .content-modal {
     padding: 1rem .5rem;
+
+    .div-show-comments {
+        margin-top: 1rem;
+    }
 }
 
 .livro-title {
@@ -141,27 +145,33 @@
 }
 
 .div-verse {
-    padding: 0px 6px;
+    padding: 6px 8px 32px 8px;
+
+    .icon-tag {
+        margin-left: -10px;
+        margin-bottom: -10px;
+        font-size: 20px;
+    }
+
+    .actions {
+        float: right;
+
+        i {
+            color: #2c79ca;
+            cursor: pointer;
+            padding: 0px 12px 0px 0px;
+        }
+
+        i:hover {
+            color: #494e55;
+        }
+    }
+
+    .div-comment {
+        padding-top: 1rem;
+    }
 }
 
 .div-verse:hover {
-    background-color: rgba(0, 0, 0, 0.048);
+    background-color: rgba(0, 0, 0, 0.068);
 }
-
-.actions {
-    text-align: right;
-
-    i {
-        color: #096dd9;
-        cursor: pointer;
-        padding: 0px 12px 0px 0px;
-    }
-
-    i:hover {
-        color: #003a8c;
-    }
-}
-
-
-
-

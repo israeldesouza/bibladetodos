@@ -30,6 +30,8 @@ export class BibliaComponent implements OnInit {
     indexCapituloLivroSelesionado: number = 0;
     indexVersiculoSelesionado: number = 0;
 
+    showComments: boolean = true;
+
     fullScreen: boolean = false;
 
     livro: Biblia = { name: '', comment: '', chapters: [] };

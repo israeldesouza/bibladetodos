@@ -15,6 +15,7 @@ import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 import { BibliaComponent } from './biblia.component';
 
@@ -36,7 +37,8 @@ import { BibliaComponent } from './biblia.component';
         NzBackTopModule,
 
         NzLayoutModule,
-        NzModalModule
+        NzModalModule,
+        NzSwitchModule
     ],
     declarations: [
         BibliaComponent
