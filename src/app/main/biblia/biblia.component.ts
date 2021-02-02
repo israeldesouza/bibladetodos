@@ -45,27 +45,30 @@ export class BibliaComponent implements OnInit {
             .getScreenSize()
             .subscribe((screenSize: number) => this.innerWidth = screenSize);
 
-        this.bibliaService
-            .getMenuBiblia()
-            .subscribe((res) => {
-                this.livrosMenu = res;
-            });
+        this.livrosMenu = this.bibliaService.getMenuBiblia();
 
         this.ultimoLivro = this.bibliaService.getUltimoLivroLido();
         if (this.ultimoLivro) {
-            const livroLocal = this.bibliaService.getLivroLocal(this.ultimoLivro.nome);
             this.indexLivroSelesionado = this.ultimoLivro.indexLivro;
             this.indexCapituloLivroSelesionado = this.ultimoLivro.indexCapitulo;
 
+            const livroLocal = this.bibliaService.getLivroLocal(this.ultimoLivro.nome);
+
             if (livroLocal) {
+
                 this.livro = livroLocal;
                 this.tratarDados();
+
             } else {
+
                 this.obterLivroBiblia();
+
             }
 
         } else {
+
             this.obterLivroBiblia();
+
         }
     }
 
@@ -93,15 +96,12 @@ export class BibliaComponent implements OnInit {
             return;
         }
 
-        this.bibliaService
-            .getLivroBiblia(this.indexLivroSelesionado)
-            .subscribe((res) => {
-                this.livro = res;
-                this.tratarDados();
-            });
+        this.livro = this.bibliaService.getLivroBiblia(this.indexLivroSelesionado);
+        this.tratarDados();
     }
 
     tratarDados() {
+
         let indexDoCapitulo = this.indexCapituloLivroSelesionado;
         this.livroSelecionado = this.livrosMenu[this.indexLivroSelesionado].livro;
 
@@ -180,9 +180,7 @@ export class BibliaComponent implements OnInit {
     }
 
     salvarLivro() {
-        this.bibliaService
-            .saveLivroLocal(this.livro)
-            .subscribe(res => {});
+        this.bibliaService.saveLivroLocal(this.livro);
     }
 
     salvarUltimolivro() {
@@ -191,7 +189,6 @@ export class BibliaComponent implements OnInit {
                 nome: this.livroSelecionado,
                 indexLivro: this.indexLivroSelesionado,
                 indexCapitulo: this.indexCapituloLivroSelesionado
-            })
-            .subscribe(res => {});
+            });
     }
 }

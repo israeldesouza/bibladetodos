@@ -1,11 +1,9 @@
 import { Injectable } from "@angular/core";
-import { of } from "rxjs/internal/observable/of";
 
 import *  as menuBiblia from './menuBiblia.json';
 import *  as biblia from './biblia.json';
 import { Biblia } from "./biblia";
 import { MenuBiblia } from "./menu-biblia";
-import { Observable } from "rxjs";
 
 
 @Injectable({
@@ -15,19 +13,18 @@ export class BibliaService {
 
     constructor(){}
 
-    getMenuBiblia() : Observable<Array<MenuBiblia>>{
-        const menuBibliaArray: any = menuBiblia as any[];
-        return of(menuBibliaArray.default as MenuBiblia[]);
+    getMenuBiblia() : MenuBiblia[]{
+        const menuBibliaArray: any = menuBiblia;
+        return menuBibliaArray.default;
     }
 
-    getLivroBiblia(index: number) : Observable<Biblia>{
-        const bibliaArray: any = biblia as any;
-        return of(bibliaArray.default[index]);
+    getLivroBiblia(index: number) : Biblia{
+        const bibliaArray: any = biblia;
+        return bibliaArray.default[index];
     }
 
-    saveLivroLocal(livro: Biblia) : Observable<boolean> {
+    saveLivroLocal(livro: Biblia) {
         localStorage.setItem(livro.name, JSON.stringify(livro));
-        return of(true);
     }
 
     getLivroLocal(nomeLivro: string) : Biblia | null{
@@ -35,9 +32,8 @@ export class BibliaService {
         return JSON.parse(livro);
     }
 
-    salvarUltimoLivroLido(ultimoLivro: { nome: string, indexLivro: number, indexCapitulo: number }) : Observable<boolean> {
+    salvarUltimoLivroLido(ultimoLivro: { nome: string, indexLivro: number, indexCapitulo: number }) {
         localStorage.setItem('UltimoLivroLido', JSON.stringify(ultimoLivro));
-        return of(true);
     }
 
     getUltimoLivroLido() : { nome: string, indexLivro: number, indexCapitulo: number } | null{
