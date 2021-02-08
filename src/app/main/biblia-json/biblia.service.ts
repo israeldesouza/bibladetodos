@@ -27,18 +27,27 @@ export class BibliaService {
         localStorage.setItem(livro.name, JSON.stringify(livro));
     }
 
-    getLivroLocal(nomeLivro: string) : Biblia | null{
+    getLivroLocal(nomeLivro: string) {
         const livro: any = localStorage.getItem(nomeLivro);
         return JSON.parse(livro);
     }
 
-    salvarUltimoLivroLido(ultimoLivro: { nome: string, indexLivro: number, indexCapitulo: number }) {
+    salvarUltimoLivroLido(ultimoLivro: { nome: string, indexLivro: number, indexCapitulo: number, indexVerso: number }) {
         localStorage.setItem('UltimoLivroLido', JSON.stringify(ultimoLivro));
     }
 
-    getUltimoLivroLido() : { nome: string, indexLivro: number, indexCapitulo: number } | null{
+    getUltimoLivroLido(){
         const ultimoLivro: any = localStorage.getItem('UltimoLivroLido');
         return JSON.parse(ultimoLivro);
+    }
+
+    salvarConfig(config: {}){
+        localStorage.setItem('config', JSON.stringify(config));
+    }
+
+    getConfig(){
+        const config: any = localStorage.getItem('config');
+        return JSON.parse(config);
     }
 
 }

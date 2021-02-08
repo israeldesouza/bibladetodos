@@ -20,24 +20,26 @@ export class BibliaComponent implements OnInit {
     capitolos: Array<Capitulos> = [];
     versiculos: Array<any> = [];
     ultimoLivro: any;
-    fontSize: string = 'Médio';
-    styleSizeFont: string = 'medium';
-    textoSizeSelector: string = 'medium';
-    sizeSelector: any = 'small';
     modalConfig: boolean = false;
-
+    
     indexLivroSelesionado: number = 0;
     indexCapituloLivroSelesionado: number = 0;
     indexVersiculoSelesionado: number = 0;
 
-    showComments: boolean = true;
+    config: any = {
+        fontSize: 'Médio',
+        showComments: true,
+        showVerses: false,
+        changeConfig: false
+    };
 
-    fullScreen: boolean = false;
+    styleSizeFont: string = 'medium';
+
 
     livro: Biblia = { name: '', comment: '', chapters: [] };
 
     constructor(private bibliaService: BibliaService,
-        private onChangeScreenSizeService: OnChangeScreenSizeService) { }
+                private onChangeScreenSizeService: OnChangeScreenSizeService) { }
 
     ngOnInit() {
 
@@ -51,6 +53,7 @@ export class BibliaComponent implements OnInit {
         if (this.ultimoLivro) {
             this.indexLivroSelesionado = this.ultimoLivro.indexLivro;
             this.indexCapituloLivroSelesionado = this.ultimoLivro.indexCapitulo;
+            this.indexVersiculoSelesionado = this.ultimoLivro.indexVerso;
 
             const livroLocal = this.bibliaService.getLivroLocal(this.ultimoLivro.nome);
 
@@ -70,6 +73,12 @@ export class BibliaComponent implements OnInit {
             this.obterLivroBiblia();
 
         }
+
+        const config = this.bibliaService.getConfig();
+        if(config) {
+            this.config = config;
+            this.trocarTamanhoFont(this.config.fontSize);
+        };
     }
 
     bookChange(livroBiblia: string) {
@@ -89,6 +98,7 @@ export class BibliaComponent implements OnInit {
 
     obterLivroBiblia() {
         const livroLocal = this.bibliaService.getLivroLocal(this.livroSelecionado);
+        this.indexVersiculoSelesionado = 0;
 
         if (livroLocal) {
             this.livro = livroLocal;
@@ -103,14 +113,16 @@ export class BibliaComponent implements OnInit {
     tratarDados() {
 
         let indexDoCapitulo = this.indexCapituloLivroSelesionado;
+        let indexVersiculo = this.indexVersiculoSelesionado;
         this.livroSelecionado = this.livrosMenu[this.indexLivroSelesionado].livro;
 
         this.capitolos = this.livrosMenu[this.indexLivroSelesionado].chapter;
         this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[indexDoCapitulo].versesNumber;
 
         indexDoCapitulo++;
+        indexVersiculo++;
         this.capituloSelecionado = indexDoCapitulo.toString();
-        this.versiculoSelecionado = 'Versículos';
+        this.versiculoSelecionado = indexVersiculo.toString();
         this.salvarUltimolivro();
     }
 
@@ -118,7 +130,8 @@ export class BibliaComponent implements OnInit {
         index--;
         this.indexCapituloLivroSelesionado = index;
         this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[this.indexCapituloLivroSelesionado].versesNumber;
-        this.versiculoSelecionado = 'Versículos';
+        this.versiculoSelecionado = '1';
+        this.indexVersiculoSelesionado = 0;
 
         window.scroll(0,0);
         this.salvarUltimolivro();
@@ -126,48 +139,55 @@ export class BibliaComponent implements OnInit {
 
     trocarVersiculo(event: any) {
         this.indexVersiculoSelesionado = event - 1;
+        this.salvarUltimolivro();
     }
 
     changeFullScreen() {
-        this.fullScreen = !this.fullScreen;
+        this.config.showVerses = !this.config.showVerses;
     }
 
     trocarTamanhoFont(event: string) {
         switch (event) {
             case 'Pequeno':
                 this.styleSizeFont = 'small';
-                this.sizeSelector = 'small';
-                this.textoSizeSelector = 'small';
+                this.config.fontSize = event;
                 break;
             case 'Médio':
                 this.styleSizeFont = 'medium';
-                this.textoSizeSelector = 'medium';
-                this.sizeSelector = 'default';
+                this.config.fontSize = event;
                 break;
             case 'Grande':
                 this.styleSizeFont = 'large';
+                this.config.fontSize = event;
                 break;
             case 'Extra Grande':
                 this.styleSizeFont = 'x-large';
+                this.config.fontSize = event;
                 break;
 
             default:
                 break;
         }
+
+        this.salvarConfig();
+    }
+
+    salvarConfig(){
+        this.bibliaService.salvarConfig(this.config);
     }
 
     @HostListener('document:keydown', ['$event'])
     keyPress(event: any){
-
-        if(this.versiculoSelecionado != 'Versículos' && event.key == 'ArrowRight') {
+        if(this.config.showVerses && event.key == 'ArrowRight') {
             let indexVerso = this.indexVersiculoSelesionado + 1;
             const quantidadeVesiculos = this.livro.chapters[this.indexCapituloLivroSelesionado].length;
             if(indexVerso >= quantidadeVesiculos) return;
 
             this.versiculoSelecionado = (indexVerso + 1).toString();
             this.indexVersiculoSelesionado = indexVerso;
+            this.salvarUltimolivro();
 
-        } else if(this.versiculoSelecionado != 'Versículos' && event.key == 'ArrowLeft') {
+        } else if(this.config.showVerses  && event.key == 'ArrowLeft') {
 
             let indexVersoDiminuir = this.indexVersiculoSelesionado - 1;
 
@@ -175,7 +195,7 @@ export class BibliaComponent implements OnInit {
 
             this.versiculoSelecionado = (indexVersoDiminuir + 1).toString();
             this.indexVersiculoSelesionado = indexVersoDiminuir;
-
+            this.salvarUltimolivro();
         }
     }
 
@@ -188,7 +208,8 @@ export class BibliaComponent implements OnInit {
             .salvarUltimoLivroLido({
                 nome: this.livroSelecionado,
                 indexLivro: this.indexLivroSelesionado,
-                indexCapitulo: this.indexCapituloLivroSelesionado
+                indexCapitulo: this.indexCapituloLivroSelesionado,
+                indexVerso: this.indexVersiculoSelesionado
             });
     }
 }

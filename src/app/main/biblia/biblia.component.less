@@ -1,70 +1,3 @@
-
-
-.number-verse {
-    font-weight: 600;
-    font-size: medium;
-    color: #000000;
-    margin-left: 0.5rem;
-    font-size: 18px;
-}
-
-.verse {
-    color: #434343;
-}
-
-.all-verses {
-    margin-top: 1rem;
-}
-
-.div-card {
-    margin: 1rem;
-}
-
-.lembrete {
-    font-size: x-large;
-}
-
-.ant-badge-dot {
-    width: 10px;
-    height: 10px;
-}
-
-.icon-action {
-    color: #ad4e00;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.div-versos-full-screen {
-    min-height: 74Vh;
-}
-
-.div-versos {
-    min-height: 50Vh;
-}
-
-.div-card-comment {
-    margin-top: 2rem;
-}
-
-.icon-full-screen {
-    cursor: pointer;
-    font-size: large;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 1rem;
-}
-
-//////////////////////////////////////
-
 .ant-layout-header {
     height: 42px;
     padding: .5rem;
@@ -78,16 +11,24 @@
         margin-right: .5rem;
     }
 
-    .livro {
+    .select-livro-menor {
+        width: 120px;
+    }
+
+    .select-livro-maior {
         width: 180px;
     }
 
-    .capitulo {
+    .select-capitulo-maior {
+        width: 120px;
+    }
+
+    .select-capitulo-menor {
         width: 100px;
     }
 
     .versiculo {
-        width: 80px;
+        width: 70px;
     }
 
     .icon-menu {
@@ -95,7 +36,7 @@
         color: #ffffff;
         cursor: pointer;
         float: right;
-        margin-top: 4px;
+        margin: 4px 4px;
         font-size: medium;
     }
 }
@@ -103,7 +44,7 @@
 .content-modal {
     padding: 1rem .5rem;
 
-    .div-show-comments {
+    .div-margin {
         margin-top: 1rem;
     }
 }
@@ -126,11 +67,31 @@
     padding: .5rem;
     line-height: 15px;
     background: #001529;
-
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
+
+    .a-arrows {
+        color: white;
+        margin-top: -18px;
+    }
+
+    .actions-footer {
+        text-align: center;
+        margin-top: 8px;
+        font-size: large;
+    
+        i {
+            color: #2c79ca;
+            cursor: pointer;
+            padding: 0px 12px 0px 0px;
+        }
+    
+        i:hover {
+            color: #494e55;
+        }
+    }
 }
 
 :host ::ng-deep .ant-back-top-inner {
@@ -147,31 +108,57 @@
 .div-verse {
     padding: 6px 8px 32px 8px;
 
-    .icon-tag {
-        margin-left: -10px;
-        margin-bottom: -10px;
-        font-size: 20px;
-    }
-
-    .actions {
-        float: right;
-
-        i {
-            color: #2c79ca;
-            cursor: pointer;
-            padding: 0px 12px 0px 0px;
-        }
-
-        i:hover {
-            color: #494e55;
-        }
-    }
-
     .div-comment {
         padding-top: 1rem;
     }
 }
 
+.actions {
+    float: right;
+    margin-top: 8px;
+
+    i {
+        color: #2c79ca;
+        cursor: pointer;
+        padding: 0px 12px 0px 0px;
+    }
+
+    i:hover {
+        color: #494e55;
+    }
+}
+
+.icon-tag {
+    margin-left: -10px;
+    font-size: 20px;
+}
+
 .div-verse:hover {
     background-color: rgba(0, 0, 0, 0.068);
+}
+
+.overlay {
+    position: fixed;
+    top: 42px;
+    left: 0;
+    right: 0;
+    bottom: 42px;
+}
+
+@keyframes fa-blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; }
+}
+
+.fa-blink {
+    -webkit-animation: fa-blink .99s linear infinite;
+    -moz-animation: fa-blink .99s linear infinite;
+    -ms-animation: fa-blink .99s linear infinite;
+    -o-animation: fa-blink .99s linear infinite;
+    animation: fa-blink .99s linear infinite;
+}
+
+.div-comment-vesos { 
+    margin-top: 2rem;
 }
