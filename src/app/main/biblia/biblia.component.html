@@ -95,7 +95,7 @@
                 <i nz-icon nzType="tag" nzTheme="fill" [nzRotate]="45"></i>
             </div>
             <span [ngStyle]="{'font-size': styleSizeFont, 'background-color': (livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].highlight) ? '#ffec3d' : ''}">
-                &nbsp;{{ livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].verse }}&nbsp;
+                {{ livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].verse }}&nbsp;
             </span>
             <div class="div-comment-vesos" *ngIf="config.showComments">
                 <span nz-typography nzType="secondary">Comentário: &nbsp;</span>
