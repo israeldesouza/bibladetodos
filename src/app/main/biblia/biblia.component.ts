@@ -55,18 +55,7 @@ export class BibliaComponent implements OnInit {
             this.indexCapituloLivroSelesionado = this.ultimoLivro.indexCapitulo;
             this.indexVersiculoSelesionado = this.ultimoLivro.indexVerso;
 
-            const livroLocal = this.bibliaService.getLivroLocal(this.ultimoLivro.nome);
-
-            if (livroLocal) {
-
-                this.livro = livroLocal;
-                this.tratarDados();
-
-            } else {
-
-                this.obterLivroBiblia();
-
-            }
+            this.obterLivroBiblia();
 
         } else {
 
@@ -82,10 +71,12 @@ export class BibliaComponent implements OnInit {
     }
 
     bookChange(livroBiblia: string) {
-        const livroEncontrado: MenuBiblia | undefined = this.livrosMenu.find((livro: MenuBiblia) => livro.livro == livroBiblia);
-        if (livroEncontrado) {
-            this.indexLivroSelesionado = this.livrosMenu.indexOf(livroEncontrado);
+        const livroEncontrado = this.livrosMenu.findIndex((livro: MenuBiblia) => livro.livro == livroBiblia);
+        if (livroEncontrado >= 0) {
+            this.indexLivroSelesionado = livroEncontrado;
             this.indexCapituloLivroSelesionado = 0;
+            this.indexVersiculoSelesionado = 0;
+
             this.obterLivroBiblia();
         };
 
@@ -98,14 +89,12 @@ export class BibliaComponent implements OnInit {
 
     obterLivroBiblia() {
         const livroLocal = this.bibliaService.getLivroLocal(this.livroSelecionado);
-        this.indexVersiculoSelesionado = 0;
 
         if (livroLocal) {
             this.livro = livroLocal;
             this.tratarDados();
             return;
         }
-
         this.livro = this.bibliaService.getLivroBiblia(this.indexLivroSelesionado);
         this.tratarDados();
     }
@@ -130,8 +119,8 @@ export class BibliaComponent implements OnInit {
         index--;
         this.indexCapituloLivroSelesionado = index;
         this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[this.indexCapituloLivroSelesionado].versesNumber;
-        this.versiculoSelecionado = '1';
         this.indexVersiculoSelesionado = 0;
+        this.versiculoSelecionado = '1';
 
         window.scroll(0,0);
         this.salvarUltimolivro();
