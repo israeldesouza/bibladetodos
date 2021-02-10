@@ -14,7 +14,7 @@ export class LoadingService {
     getLoading(){
         return  this.loadingSubject$
                     .asObservable()
-                    .pipe(startWith(false));
+                    .pipe(startWith(true));
     }
 
     start(){

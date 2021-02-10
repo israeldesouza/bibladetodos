@@ -108,6 +108,12 @@ export class BibliaComponent implements OnInit {
         this.capituloSelecionado = indexDoCapitulo.toString();
         this.versiculoSelecionado = indexVersiculo.toString();
         this.salvarUltimolivro();
+
+        //Se usar o this.loadingService.stop(); direto sem o setTimeout da um erro no console
+        //usei seguindo a dica da documentação do angular https://angular.io/errors/NG0100
+        setTimeout(() => {
+            this.loadingService.stop();
+        }, 0);
     }
 
     trocarCapitulo(index: number) {

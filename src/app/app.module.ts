@@ -10,6 +10,8 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { pt_BR } from 'ng-zorro-antd/i18n';
 import { IconsProviderModule } from './icons-provider.module';
 
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -26,7 +28,9 @@ registerLocaleData(pt);
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        IconsProviderModule
+        IconsProviderModule,
+
+        NzSpinModule
     ],
     providers: [
         {
