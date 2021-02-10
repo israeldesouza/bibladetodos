@@ -4,15 +4,15 @@ import { Biblia } from '../biblia-json/biblia';
 
 import { BibliaService } from '../biblia-json/biblia.service';
 import { Capitulos, MenuBiblia } from '../biblia-json/menu-biblia';
-import { OnChangeScreenSizeService } from '../on-change-screen-size/on-change-screen-size.service';
+import { LoadingService } from '../loading/loading.service';
 
 @Component({
     templateUrl: './biblia.component.html',
-    styleUrls: ['./biblia.component.less']
+    styleUrls: ['./biblia.component.less'],
+    providers: [ BibliaService ]
 })
 export class BibliaComponent implements OnInit {
 
-    innerWidth: number = 0;
     livrosMenu: MenuBiblia[] = [];
     livroSelecionado: string = 'Gênesis';
     capituloSelecionado: string = '1';
@@ -21,7 +21,6 @@ export class BibliaComponent implements OnInit {
     versiculos: Array<any> = [];
     ultimoLivro: any;
     modalConfig: boolean = false;
-    
     indexLivroSelesionado: number = 0;
     indexCapituloLivroSelesionado: number = 0;
     indexVersiculoSelesionado: number = 0;
@@ -39,13 +38,9 @@ export class BibliaComponent implements OnInit {
     livro: Biblia = { name: '', comment: '', chapters: [] };
 
     constructor(private bibliaService: BibliaService,
-                private onChangeScreenSizeService: OnChangeScreenSizeService) { }
+                private loadingService: LoadingService) { }
 
     ngOnInit() {
-
-        this.onChangeScreenSizeService
-            .getScreenSize()
-            .subscribe((screenSize: number) => this.innerWidth = screenSize);
 
         this.livrosMenu = this.bibliaService.getMenuBiblia();
 
@@ -186,6 +181,10 @@ export class BibliaComponent implements OnInit {
             this.indexVersiculoSelesionado = indexVersoDiminuir;
             this.salvarUltimolivro();
         }
+    }
+
+    onClickChangeVerse(arrow: string){
+        this.keyPress({ key: arrow });
     }
 
     salvarLivro() {

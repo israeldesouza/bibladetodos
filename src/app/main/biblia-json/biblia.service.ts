@@ -6,9 +6,7 @@ import { Biblia } from "./biblia";
 import { MenuBiblia } from "./menu-biblia";
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class BibliaService {
 
     constructor(){}

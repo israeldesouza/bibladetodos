@@ -1,32 +1,18 @@
-import { Component, HostListener, OnInit } from "@angular/core";
-import { Subject } from "rxjs";
-import { debounceTime } from 'rxjs/operators';
-
-import { OnChangeScreenSizeService } from "./on-change-screen-size/on-change-screen-size.service";
+import { Component, OnInit } from "@angular/core";
+import { LoadingService } from "./loading/loading.service";
 
 @Component({
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.less']
 })
 export class MainComponent implements OnInit{
-    visible: boolean = false;
-    onResizeDebounce: Subject<number> = new Subject<number>();
 
-    constructor(private onChangeScreenSizeService: OnChangeScreenSizeService) {
-        this.onChangeScreenSizeService
-            .setSizeScreen(window.innerWidth);
-    }
+    isloading: boolean = true;
+
+    constructor(private loadingService: LoadingService) { }
 
     ngOnInit(){
-        this.onResizeDebounce
-            .pipe(debounceTime(200))
-            .subscribe((newSize: number) => {
-                this.onChangeScreenSizeService.setSizeScreen(newSize);
-            });
+        this.loadingService.getLoading().subscribe(loading => this.isloading = loading);
     }
 
-    @HostListener('window:resize', ['$event'])
-    onResize(event: any) {
-        this.onResizeDebounce.next(window.innerWidth);
-    }
 }
