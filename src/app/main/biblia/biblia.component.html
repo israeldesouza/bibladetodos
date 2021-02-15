@@ -3,14 +3,14 @@
         <div class="div-header">
             <div class="div-selecao">
                 <nz-select [ngClass]="config.showVerses ? 'select-livro-menor': 'select-livro-maior'" nzShowSearch
-                    nzSize="small" [(ngModel)]="livroSelecionado" (ngModelChange)="bookChange($event)">
+                    [(ngModel)]="livroSelecionado" (ngModelChange)="bookChange($event)">
                     <nz-option *ngFor="let l of livrosMenu" [nzLabel]="l.livro" [nzValue]="l.livro"></nz-option>
                 </nz-select>
             </div>
 
             <div class="div-selecao">
                 <nz-select [ngClass]="config.showVerses ? 'select-capitulo-menor': 'select-capitulo-maior'"
-                    nzSize="small" [(ngModel)]="capituloSelecionado" (ngModelChange)="trocarCapitulo($event)">
+                    [(ngModel)]="capituloSelecionado" (ngModelChange)="trocarCapitulo($event)">
                     <ng-container *ngFor="let c of capitolos; let i = index;">
                         <nz-option nzLabel="Cap: {{converterParaString(i)}}" [nzValue]="converterParaString(i)">
                         </nz-option>
@@ -18,7 +18,7 @@
                 </nz-select>
             </div>
             <div class="div-selecao" *ngIf="config.showVerses">
-                <nz-select class="versiculo" nzSize="small" [(ngModel)]="versiculoSelecionado"
+                <nz-select class="versiculo" [(ngModel)]="versiculoSelecionado"
                     (ngModelChange)="trocarVersiculo($event)">
                     <nz-option *ngFor="let v of versiculos" nzLabel="V: {{converterParaString(v)}}"
                         [nzValue]="converterParaString(v)"></nz-option>
