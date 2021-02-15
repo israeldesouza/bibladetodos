@@ -1,9 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Biblia } from '../biblia-json/biblia';
+import { Biblia, UltimoLivroLido } from './biblia';
 
 
-import { BibliaService } from '../biblia-json/biblia.service';
-import { Capitulos, MenuBiblia } from '../biblia-json/menu-biblia';
+import { BibliaService } from './biblia.service';
+import { Capitulos, MenuBiblia } from './biblia';
 import { LoadingService } from '../loading/loading.service';
 
 @Component({
@@ -16,16 +16,16 @@ export class BibliaComponent implements OnInit {
 	livrosMenu: MenuBiblia[] = [];
 	livroSelecionado: string = 'Gênesis';
 	capituloSelecionado: string = '1';
-	versiculoSelecionado: string = 'Versículos';
+	versiculoSelecionado: string = '1';
 	capitolos: Array<Capitulos> = [];
-	versiculos: Array<any> = [];
-	ultimoLivro: any;
+	versiculos: Array<number> = [];
+	ultimoLivro!: UltimoLivroLido;
 	modalConfig: boolean = false;
 	indexLivroSelesionado: number = 0;
 	indexCapituloLivroSelesionado: number = 0;
 	indexVersiculoSelesionado: number = 0;
 
-	config: any = {
+	config = {
 		fontSize: 'Médio',
 		showComments: true,
 		showVerses: false,
@@ -35,7 +35,7 @@ export class BibliaComponent implements OnInit {
 	styleSizeFont: string = 'medium';
 
 
-	livro: Biblia = { name: '', comment: '', chapters: [] };
+	livro!: Biblia;
 
 	constructor(private bibliaService: BibliaService,
 		private loadingService: LoadingService) { }

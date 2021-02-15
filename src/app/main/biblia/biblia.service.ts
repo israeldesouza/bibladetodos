@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 
-import *  as menuBiblia from './menuBiblia.json';
-import *  as biblia from './biblia.json';
-import { Biblia } from "./biblia";
-import { MenuBiblia } from "./menu-biblia";
+import *  as menuBiblia from '../biblia-json/menuBiblia.json';
+import *  as biblia from '../biblia-json/biblia.json';
+import { Biblia, UltimoLivroLido } from "./biblia";
+import { MenuBiblia } from "./biblia";
 
 
 @Injectable()
@@ -30,7 +30,7 @@ export class BibliaService {
         return JSON.parse(livro);
     }
 
-    salvarUltimoLivroLido(ultimoLivro: { nome: string, indexLivro: number, indexCapitulo: number, indexVerso: number }) {
+    salvarUltimoLivroLido(ultimoLivro: UltimoLivroLido) {
         localStorage.setItem('UltimoLivroLido', JSON.stringify(ultimoLivro));
     }
 
@@ -39,7 +39,7 @@ export class BibliaService {
         return JSON.parse(ultimoLivro);
     }
 
-    salvarConfig(config: {}){
+    salvarConfig(config: {fontSize: string, showComments: boolean, showVerses: boolean, changeConfig: boolean }){
         localStorage.setItem('config', JSON.stringify(config));
     }
 
