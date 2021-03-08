@@ -33,7 +33,11 @@ export class BibliaComponent implements OnInit {
 
 	styleSizeFont: string = 'medium';
 
-	livro!: IBiblia;
+	livro: IBiblia = {
+		name: '',
+		chapters: [],
+		comment: '',
+	};
 
 	constructor(
 		private bibliaService: BibliaService,
