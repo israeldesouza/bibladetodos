@@ -1,107 +1,118 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Biblia, UltimoLivroLido } from './biblia';
-
+import { IBiblia, IUltimoLivroLido } from './biblia';
 
 import { BibliaService } from './biblia.service';
-import { Capitulos, MenuBiblia } from './biblia';
+import { ICapitulos, IMenuBiblia } from './biblia';
 import { LoadingService } from '../loading/loading.service';
 
 @Component({
 	templateUrl: './biblia.component.html',
 	styleUrls: ['./biblia.component.less'],
-	providers: [BibliaService]
+	providers: [BibliaService],
 })
 export class BibliaComponent implements OnInit {
-
-	livrosMenu: MenuBiblia[] = [];
+	livrosMenu: IMenuBiblia[] = [];
 	livroSelecionado: string = 'Gênesis';
 	capituloSelecionado: string = '1';
 	versiculoSelecionado: string = '1';
-	capitolos: Array<Capitulos> = [];
+	capitolos: Array<ICapitulos> = [];
 	versiculos: Array<number> = [];
-	ultimoLivro!: UltimoLivroLido;
+	ultimoLivro!: IUltimoLivroLido;
 	modalConfig: boolean = false;
 	indexLivroSelesionado: number = 0;
 	indexCapituloLivroSelesionado: number = 0;
 	indexVersiculoSelesionado: number = 0;
 
 	config = {
+		config: 'capitulosVesos',
 		fontSize: 'Médio',
 		showComments: true,
 		showVerses: false,
-		changeConfig: false
+		changeConfig: false,
 	};
 
 	styleSizeFont: string = 'medium';
 
+	livro!: IBiblia;
 
-	livro!: Biblia;
-
-	constructor(private bibliaService: BibliaService,
-		private loadingService: LoadingService) { }
+	constructor(
+		private bibliaService: BibliaService,
+		private loadingService: LoadingService
+	) {}
 
 	ngOnInit() {
-
 		this.livrosMenu = this.bibliaService.getMenuBiblia();
 
-		this.ultimoLivro = this.bibliaService.getUltimoLivroLido();
-		if (this.ultimoLivro) {
-			this.indexLivroSelesionado = this.ultimoLivro.indexLivro;
-			this.indexCapituloLivroSelesionado = this.ultimoLivro.indexCapitulo;
-			this.indexVersiculoSelesionado = this.ultimoLivro.indexVerso;
+		this.bibliaService
+			.getUltimoLivroLido()
+			.then((ultimoLido) => {
+				if (ultimoLido[0]) {
+					this.livroSelecionado = ultimoLido[0].nome;
+					this.ultimoLivro = ultimoLido[0];
+					this.indexLivroSelesionado = this.ultimoLivro.indexLivro;
+					this.indexCapituloLivroSelesionado = this.ultimoLivro.indexCapitulo;
+					this.indexVersiculoSelesionado = this.ultimoLivro.indexVerso;
 
-			this.obterLivroBiblia();
+					this.obterLivroBiblia();
+				} else {
+					this.obterLivroBiblia();
+				}
+			})
+			.catch((error) => console.error(error));
 
-		} else {
-
-			this.obterLivroBiblia();
-
-		}
-
-		const config = this.bibliaService.getConfig();
-		if (config) {
-			this.config = config;
-			this.trocarTamanhoFont(this.config.fontSize);
-		};
+		this.bibliaService.getConfig(this.config.config).then((config) => {
+			if (config) {
+				this.config = config;
+				this.trocarTamanhoFont(this.config.fontSize);
+			}
+		});
 	}
 
 	bookChange(livroBiblia: string) {
-		const livroEncontrado = this.livrosMenu.findIndex((livro: MenuBiblia) => livro.livro == livroBiblia);
+		const livroEncontrado = this.livrosMenu.findIndex(
+			(livro: IMenuBiblia) => livro.livro == livroBiblia
+		);
 		if (livroEncontrado >= 0) {
 			this.indexLivroSelesionado = livroEncontrado;
 			this.indexCapituloLivroSelesionado = 0;
 			this.indexVersiculoSelesionado = 0;
 
 			this.obterLivroBiblia();
-		};
-
+		}
 	}
 
 	converterParaString(numero: number) {
-		numero++
+		numero++;
 		return numero.toString();
 	}
 
 	obterLivroBiblia() {
-		const livroLocal = this.bibliaService.getLivroLocal(this.livroSelecionado);
+		this.bibliaService
+			.getLivro(this.livroSelecionado)
+			.then((livro: IBiblia) => {
+				if (livro) {
+					this.livro = livro;
+				} else {
+					this.livro = this.bibliaService.getLivroBiblia(
+						this.indexLivroSelesionado
+					);
+				}
 
-		if (livroLocal) {
-			this.livro = livroLocal;
-			this.tratarDados();
-			return;
-		}
-		this.livro = this.bibliaService.getLivroBiblia(this.indexLivroSelesionado);
-		this.tratarDados();
+				this.tratarDados();
+			});
 	}
 
 	tratarDados() {
-
 		let indexDoCapitulo = this.indexCapituloLivroSelesionado;
 		let indexVersiculo = this.indexVersiculoSelesionado;
-		this.livroSelecionado = this.livrosMenu[this.indexLivroSelesionado].livro;
+		this.livroSelecionado = this.livrosMenu[
+			this.indexLivroSelesionado
+		].livro;
 
 		this.capitolos = this.livrosMenu[this.indexLivroSelesionado].chapter;
-		this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[indexDoCapitulo].versesNumber;
+		this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[
+			indexDoCapitulo
+		].versesNumber;
 
 		indexDoCapitulo++;
 		indexVersiculo++;
@@ -119,7 +130,9 @@ export class BibliaComponent implements OnInit {
 	trocarCapitulo(index: number) {
 		index--;
 		this.indexCapituloLivroSelesionado = index;
-		this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[this.indexCapituloLivroSelesionado].versesNumber;
+		this.versiculos = this.livrosMenu[this.indexLivroSelesionado].chapter[
+			this.indexCapituloLivroSelesionado
+		].versesNumber;
 		this.indexVersiculoSelesionado = 0;
 		this.versiculoSelecionado = '1';
 
@@ -159,26 +172,29 @@ export class BibliaComponent implements OnInit {
 				break;
 		}
 
-		this.salvarConfig();
+		this.updateConfig();
 	}
 
 	salvarConfig() {
 		this.bibliaService.salvarConfig(this.config);
+	}
+	updateConfig() {
+		this.bibliaService.updateConfig(this.config);
 	}
 
 	@HostListener('document:keydown', ['$event'])
 	keyPress(event: any) {
 		if (this.config.showVerses && event.key == 'ArrowRight') {
 			let indexVerso = this.indexVersiculoSelesionado + 1;
-			const quantidadeVesiculos = this.livro.chapters[this.indexCapituloLivroSelesionado].length;
+			const quantidadeVesiculos = this.livro.chapters[
+				this.indexCapituloLivroSelesionado
+			].length;
 			if (indexVerso >= quantidadeVesiculos) return;
 
 			this.versiculoSelecionado = (indexVerso + 1).toString();
 			this.indexVersiculoSelesionado = indexVerso;
 			this.salvarUltimolivro();
-
 		} else if (this.config.showVerses && event.key == 'ArrowLeft') {
-
 			let indexVersoDiminuir = this.indexVersiculoSelesionado - 1;
 
 			if (indexVersoDiminuir < 0) indexVersoDiminuir = 0;
@@ -193,17 +209,39 @@ export class BibliaComponent implements OnInit {
 		this.keyPress({ key: arrow });
 	}
 
-	salvarLivro() {
-		this.bibliaService.saveLivroLocal(this.livro);
+	async salvarLivro() {
+		const livroExistenteDb = await this.bibliaService.getLivro(
+			this.livro.name
+		);
+		livroExistenteDb
+			? this.bibliaService.updateLivro(this.livro)
+			: this.bibliaService.saveLivro(this.livro);
 	}
 
 	salvarUltimolivro() {
-		this.bibliaService
-			.salvarUltimoLivroLido({
+		if (!this.ultimoLivro) {
+			this.ultimoLivro = {
 				nome: this.livroSelecionado,
 				indexLivro: this.indexLivroSelesionado,
 				indexCapitulo: this.indexCapituloLivroSelesionado,
-				indexVerso: this.indexVersiculoSelesionado
-			});
+				indexVerso: this.indexVersiculoSelesionado,
+			};
+			this.bibliaService.salvarUltimoLivroLido(this.ultimoLivro);
+
+			return;
+		}
+
+		this.ultimoLivro = {
+			nome: this.livroSelecionado,
+			indexLivro: this.indexLivroSelesionado,
+			indexCapitulo: this.indexCapituloLivroSelesionado,
+			indexVerso: this.indexVersiculoSelesionado,
+		};
+
+		this.bibliaService.updateUltimoLivroLido(this.ultimoLivro);
+	}
+
+	apagarDb() {
+		this.bibliaService.deleteDataBase();
 	}
 }

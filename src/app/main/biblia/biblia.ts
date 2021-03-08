@@ -1,30 +1,38 @@
-export interface Biblia {
-    name: string,
-    comment: string,
-    chapters: Chapter[][]
+export interface IBiblia {
+	name: string;
+	comment: string;
+	chapters: IChapter[][];
 }
 
-export interface Chapter {
-    verse: string,
-    highlight: boolean,
-    reminder: boolean,
-    comment: string,
-    hasComment: boolean
+export interface IChapter {
+	verse: string;
+	highlight: boolean;
+	reminder: boolean;
+	comment: string;
+	hasComment: boolean;
 }
 
-export interface MenuBiblia {
-    livro: string
-    chapter: Capitulos[]
+export interface IMenuBiblia {
+	livro: string;
+	chapter: ICapitulos[];
 }
 
-export interface Capitulos {
-    chapterNumber: number,
-    versesNumber: number[]
+export interface ICapitulos {
+	chapterNumber: number;
+	versesNumber: number[];
 }
 
-export interface UltimoLivroLido {
-    nome: string,
-    indexLivro: number,
-    indexCapitulo: number,
-    indexVerso: number
+export interface IUltimoLivroLido {
+	nome: string;
+	indexLivro: number;
+	indexCapitulo: number;
+	indexVerso: number;
+}
+
+export interface IConfig {
+	config: string;
+	fontSize: string;
+	showComments: boolean;
+	showVerses: boolean;
+	changeConfig: boolean;
 }

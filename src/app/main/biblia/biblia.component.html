@@ -1,134 +1,339 @@
 <nz-layout>
-    <nz-header>
-        <div class="div-header">
-            <div class="div-selecao">
-                <nz-select [ngClass]="config.showVerses ? 'select-livro-menor': 'select-livro-maior'" nzShowSearch
-                    [(ngModel)]="livroSelecionado" (ngModelChange)="bookChange($event)">
-                    <nz-option *ngFor="let l of livrosMenu" [nzLabel]="l.livro" [nzValue]="l.livro"></nz-option>
-                </nz-select>
-            </div>
+	<nz-header>
+		<div class="div-header">
+			<div class="div-selecao">
+				<nz-select
+					[ngClass]="
+						config.showVerses
+							? 'select-livro-menor'
+							: 'select-livro-maior'
+					"
+					nzShowSearch
+					[(ngModel)]="livroSelecionado"
+					(ngModelChange)="bookChange($event)"
+				>
+					<nz-option
+						*ngFor="let l of livrosMenu"
+						[nzLabel]="l.livro"
+						[nzValue]="l.livro"
+					></nz-option>
+				</nz-select>
+			</div>
 
-            <div class="div-selecao">
-                <nz-select [ngClass]="config.showVerses ? 'select-capitulo-menor': 'select-capitulo-maior'"
-                    [(ngModel)]="capituloSelecionado" (ngModelChange)="trocarCapitulo($event)">
-                    <ng-container *ngFor="let c of capitolos; let i = index;">
-                        <nz-option nzLabel="Cap: {{converterParaString(i)}}" [nzValue]="converterParaString(i)">
-                        </nz-option>
-                    </ng-container>
-                </nz-select>
-            </div>
-            <div class="div-selecao" *ngIf="config.showVerses">
-                <nz-select class="versiculo" [(ngModel)]="versiculoSelecionado"
-                    (ngModelChange)="trocarVersiculo($event)">
-                    <nz-option *ngFor="let v of versiculos" nzLabel="V: {{converterParaString(v)}}"
-                        [nzValue]="converterParaString(v)"></nz-option>
-                </nz-select>
-            </div>
+			<div class="div-selecao">
+				<nz-select
+					[ngClass]="
+						config.showVerses
+							? 'select-capitulo-menor'
+							: 'select-capitulo-maior'
+					"
+					[(ngModel)]="capituloSelecionado"
+					(ngModelChange)="trocarCapitulo($event)"
+				>
+					<ng-container *ngFor="let c of capitolos; let i = index">
+						<nz-option
+							nzLabel="Cap: {{ converterParaString(i) }}"
+							[nzValue]="converterParaString(i)"
+						>
+						</nz-option>
+					</ng-container>
+				</nz-select>
+			</div>
+			<div class="div-selecao" *ngIf="config.showVerses">
+				<nz-select
+					class="versiculo"
+					[(ngModel)]="versiculoSelecionado"
+					(ngModelChange)="trocarVersiculo($event)"
+				>
+					<nz-option
+						*ngFor="let v of versiculos"
+						nzLabel="V: {{ converterParaString(v) }}"
+						[nzValue]="converterParaString(v)"
+					></nz-option>
+				</nz-select>
+			</div>
 
-            <div class="icon-menu" (click)="modalConfig = true; config.changeConfig = true; salvarConfig()">
-                <i [ngClass]="!config.changeConfig ? 'fa-blink': ''" nz-icon nzType="setting" nzTheme="outline"></i>
-            </div>
-            <nz-modal [(nzVisible)]="modalConfig" (nzOnCancel)="modalConfig = false" [nzFooter]="null">
-                <ng-container *nzModalContent>
-                    <div class="content-modal">
-                        <span class="livro-title">Tamanho do texto: </span>
-                        <nz-select class="fontSize"  [(ngModel)]="config.fontSize"
-                            (ngModelChange)="trocarTamanhoFont($event)">
-                            <nz-option nzLabel="Pequeno" nzValue="Pequeno"></nz-option>
-                            <nz-option nzLabel="Médio" nzValue="Médio"></nz-option>
-                            <nz-option nzLabel="Grande" nzValue="Grande"></nz-option>
-                            <nz-option nzLabel="Extra Grande" nzValue="Extra Grande"></nz-option>
-                        </nz-select>
+			<div
+				class="icon-menu"
+				(click)="
+					modalConfig = true;
+					config.changeConfig = true;
+					salvarConfig()
+				"
+			>
+				<i
+					[ngClass]="!config.changeConfig ? 'fa-blink' : ''"
+					nz-icon
+					nzType="setting"
+					nzTheme="outline"
+				></i>
+			</div>
+			<nz-modal
+				[(nzVisible)]="modalConfig"
+				(nzOnCancel)="modalConfig = false"
+				[nzFooter]="null"
+			>
+				<ng-container *nzModalContent>
+					<div class="content-modal">
+						<span class="livro-title">Tamanho do texto: </span>
+						<nz-select
+							class="fontSize"
+							[(ngModel)]="config.fontSize"
+							(ngModelChange)="trocarTamanhoFont($event)"
+						>
+							<nz-option
+								nzLabel="Pequeno"
+								nzValue="Pequeno"
+							></nz-option>
+							<nz-option
+								nzLabel="Médio"
+								nzValue="Médio"
+							></nz-option>
+							<nz-option
+								nzLabel="Grande"
+								nzValue="Grande"
+							></nz-option>
+							<nz-option
+								nzLabel="Extra Grande"
+								nzValue="Extra Grande"
+							></nz-option>
+						</nz-select>
 
-                        <div class="div-margin">
-                            <p class="livro-title">Exibir comentários: &nbsp;
-                                <nz-switch nzSize="small" [(ngModel)]="config.showComments"
-                                    (ngModelChange)="salvarConfig()"></nz-switch>
-                            </p>
-                        </div>
+						<div class="div-margin">
+							<p class="livro-title">
+								Exibir comentários: &nbsp;
+								<nz-switch
+									nzSize="small"
+									[(ngModel)]="config.showComments"
+									(ngModelChange)="updateConfig()"
+								></nz-switch>
+							</p>
+						</div>
 
-                        <div class="div-margin">
-                            <p class="livro-title">Exibir versículos em tela cheia: &nbsp;
-                                <nz-switch nzSize="small" [(ngModel)]="config.showVerses"
-                                    (ngModelChange)="salvarConfig()"></nz-switch>
-                            </p>
-                        </div>
-                    </div>
-                </ng-container>
-            </nz-modal>
-        </div>
-    </nz-header>
-    <nz-content class="content" #divTarget>
-        <div *ngIf="!config.showVerses">
-            <div class="div-verse" *ngFor="let verse of livro.chapters[indexCapituloLivroSelesionado]; let i = index;">
+						<div class="div-margin">
+							<p class="livro-title">
+								Exibir versículos em tela cheia: &nbsp;
+								<nz-switch
+									nzSize="small"
+									[(ngModel)]="config.showVerses"
+									(ngModelChange)="updateConfig()"
+								></nz-switch>
+							</p>
+						</div>
 
-                <div class="icon-tag" *ngIf="verse.reminder">
-                    <i nz-icon nzType="tag" nzTheme="fill" [nzRotate]="45"></i>
-                </div>
+						<div style="text-align: center; margin-top: 3rem">
+							<button
+								nz-button
+								nzType="dashed"
+								nzDanger
+								nz-popconfirm
+								nzPopconfirmTitle="Está ação irá apagar todos os comentários e marcações, você tem certeza?"
+								[nzIcon]="iconTpl"
+								(nzOnConfirm)="apagarDb()"
+							>
+								Excluir todos os dados
+								<i
+									nz-icon
+									nzType="delete"
+									nzTheme="outline"
+								></i>
+							</button>
+							<ng-template #iconTpl>
+								<i
+									nz-icon
+									nzType="question-circle-o"
+									style="color: red"
+								></i>
+							</ng-template>
+						</div>
+					</div>
+				</ng-container>
+			</nz-modal>
+		</div>
+	</nz-header>
+	<nz-content class="content" #divTarget>
+		<div *ngIf="!config.showVerses">
+			<div
+				class="div-verse"
+				*ngFor="
+					let verse of livro?.chapters[indexCapituloLivroSelesionado];
+					let i = index
+				"
+			>
+				<div class="icon-tag" *ngIf="verse.reminder">
+					<i nz-icon nzType="tag" nzTheme="fill" [nzRotate]="45"></i>
+				</div>
 
-                <span [ngStyle]="{'font-size': styleSizeFont, 'background-color': (verse.highlight) ? '#ffec3d' : ''}">
-                    {{i + 1 }} - {{verse.verse}}&nbsp;
-                </span>
+				<span
+					[ngStyle]="{
+						'font-size': styleSizeFont,
+						'background-color': verse.highlight ? '#ffec3d' : ''
+					}"
+				>
+					{{ i + 1 }} - {{ verse.verse }}&nbsp;
+				</span>
 
-                <div class="actions">
-                    <i nz-typography nzCopyable
-                        nzCopyText="{{livro.name}} Cap: {{indexCapituloLivroSelesionado + 1}}, Ver: {{i + 1 }} - {{verse.verse}}"></i>
-                    <i nz-icon nzType="tag" nzTheme="outline"
-                        (click)="verse.reminder = !verse.reminder; salvarLivro()"></i>
-                    <i nz-icon nzType="highlight" nzTheme="outline"
-                        (click)="verse.highlight = !verse.highlight; salvarLivro()"></i>
-                </div>
+				<div class="actions">
+					<i
+						nz-typography
+						nzCopyable
+						nzCopyText="{{ livro.name }} Cap: {{
+							indexCapituloLivroSelesionado + 1
+						}}, Ver: {{ i + 1 }} - {{ verse.verse }}"
+					></i>
+					<i
+						nz-icon
+						nzType="tag"
+						nzTheme="outline"
+						(click)="
+							verse.reminder = !verse.reminder; salvarLivro()
+						"
+					></i>
+					<i
+						nz-icon
+						nzType="highlight"
+						nzTheme="outline"
+						(click)="
+							verse.highlight = !verse.highlight; salvarLivro()
+						"
+					></i>
+				</div>
 
-                <div class="div-comment" *ngIf="config.showComments">
-                    <span nz-typography nzType="secondary">Comentário: &nbsp;</span>
-                    <span nz-typography nzType="secondary" nzEditable [(nzContent)]="verse.comment"
-                        (nzContentChange)="salvarLivro()">
-                    </span>
-                </div>
-            </div>
-            <nz-back-top [nzTemplate]="tplBackTop" nzTarget="divTarget"></nz-back-top>
-            <ng-template #tplBackTop>
-                <div class="ant-back-top-inner"><i nz-icon nzType="vertical-align-top" nzTheme="outline"></i></div>
-            </ng-template>
-        </div>
-        <nz-card *ngIf="config.showVerses" class="overlay">
-            <div class="icon-tag"
-                *ngIf="livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].reminder">
-                <i nz-icon nzType="tag" nzTheme="fill" [nzRotate]="45"></i>
-            </div>
-            <span
-                [ngStyle]="{'font-size': styleSizeFont, 'background-color': (livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].highlight) ? '#ffec3d' : ''}">
-                {{ livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].verse }}&nbsp;
-            </span>
-            <div class="div-comment-vesos" *ngIf="config.showComments">
-                <span nz-typography nzType="secondary">Comentário: &nbsp;</span>
-                <span nz-typography nzType="secondary" nzEditable
-                    [(nzContent)]="livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].comment"
-                    (nzContentChange)="salvarLivro()">
-                </span>
-            </div>
-        </nz-card>
-    </nz-content>
-    <nz-footer>
-        <div class="div-arrows" *ngIf="config.showVerses">
-            <div style="float: left;">
-                <a class="a-arrows" nz-button nzType="text" nzSize="large" (click)="onClickChangeVerse('ArrowLeft')">
-                    <i nz-icon nzType="caret-left" nzTheme="outline"></i>
-                </a>
-            </div>
-            <div style="float: right;">
-                <a class="a-arrows" nz-button nzType="text" nzSize="large" (click)="onClickChangeVerse('ArrowRight')">
-                    <i nz-icon nzType="caret-right" nzTheme="outline"></i>
-                </a>
-            </div>
-            <div class="actions-footer">
-                <i nz-typography nzCopyable
-                    nzCopyText="{{livro.name}} Cap: {{indexCapituloLivroSelesionado + 1}}, Ver: {{indexVersiculoSelesionado + 1 }} - {{livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].verse}}"></i>
-                <i nz-icon nzType="tag" nzTheme="outline"
-                    (click)="livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].reminder = !livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].reminder; salvarLivro()"></i>
-                <i nz-icon nzType="highlight" nzTheme="outline"
-                    (click)="livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].highlight = !livro.chapters[indexCapituloLivroSelesionado][indexVersiculoSelesionado].highlight; salvarLivro()"></i>
-            </div>
-        </div>
-    </nz-footer>
+				<div class="div-comment" *ngIf="config.showComments">
+					<span nz-typography nzType="secondary"
+						>Comentário: &nbsp;</span
+					>
+					<span
+						nz-typography
+						nzType="secondary"
+						nzEditable
+						[(nzContent)]="verse.comment"
+						(nzContentChange)="salvarLivro()"
+					>
+					</span>
+				</div>
+			</div>
+			<nz-back-top
+				[nzTemplate]="tplBackTop"
+				nzTarget="divTarget"
+			></nz-back-top>
+			<ng-template #tplBackTop>
+				<div class="ant-back-top-inner">
+					<i
+						nz-icon
+						nzType="vertical-align-top"
+						nzTheme="outline"
+					></i>
+				</div>
+			</ng-template>
+		</div>
+		<nz-card *ngIf="config.showVerses" class="overlay">
+			<div
+				class="icon-tag"
+				*ngIf="
+					livro.chapters[indexCapituloLivroSelesionado][
+						indexVersiculoSelesionado
+					].reminder
+				"
+			>
+				<i nz-icon nzType="tag" nzTheme="fill" [nzRotate]="45"></i>
+			</div>
+			<span
+				[ngStyle]="{
+					'font-size': styleSizeFont,
+					'background-color': livro.chapters[
+						indexCapituloLivroSelesionado
+					][indexVersiculoSelesionado].highlight
+						? '#ffec3d'
+						: ''
+				}"
+			>
+				{{
+					livro.chapters[indexCapituloLivroSelesionado][
+						indexVersiculoSelesionado
+					].verse
+				}}&nbsp;
+			</span>
+			<div class="div-comment-vesos" *ngIf="config.showComments">
+				<span nz-typography nzType="secondary">Comentário: &nbsp;</span>
+				<span
+					nz-typography
+					nzType="secondary"
+					nzEditable
+					[(nzContent)]="
+						livro.chapters[indexCapituloLivroSelesionado][
+							indexVersiculoSelesionado
+						].comment
+					"
+					(nzContentChange)="salvarLivro()"
+				>
+				</span>
+			</div>
+		</nz-card>
+	</nz-content>
+	<nz-footer>
+		<div class="div-arrows" *ngIf="config.showVerses">
+			<div style="float: left">
+				<a
+					class="a-arrows"
+					nz-button
+					nzType="text"
+					nzSize="large"
+					(click)="onClickChangeVerse('ArrowLeft')"
+				>
+					<i nz-icon nzType="caret-left" nzTheme="outline"></i>
+				</a>
+			</div>
+			<div style="float: right">
+				<a
+					class="a-arrows"
+					nz-button
+					nzType="text"
+					nzSize="large"
+					(click)="onClickChangeVerse('ArrowRight')"
+				>
+					<i nz-icon nzType="caret-right" nzTheme="outline"></i>
+				</a>
+			</div>
+			<div class="actions-footer">
+				<i
+					nz-typography
+					nzCopyable
+					nzCopyText="{{ livro.name }} Cap: {{
+						indexCapituloLivroSelesionado + 1
+					}}, Ver: {{ indexVersiculoSelesionado + 1 }} - {{
+						livro.chapters[indexCapituloLivroSelesionado][
+							indexVersiculoSelesionado
+						].verse
+					}}"
+				></i>
+				<i
+					nz-icon
+					nzType="tag"
+					nzTheme="outline"
+					(click)="
+						livro.chapters[indexCapituloLivroSelesionado][
+							indexVersiculoSelesionado
+						].reminder = !livro.chapters[
+							indexCapituloLivroSelesionado
+						][indexVersiculoSelesionado].reminder;
+						salvarLivro()
+					"
+				></i>
+				<i
+					nz-icon
+					nzType="highlight"
+					nzTheme="outline"
+					(click)="
+						livro.chapters[indexCapituloLivroSelesionado][
+							indexVersiculoSelesionado
+						].highlight = !livro.chapters[
+							indexCapituloLivroSelesionado
+						][indexVersiculoSelesionado].highlight;
+						salvarLivro()
+					"
+				></i>
+			</div>
+		</div>
+	</nz-footer>
 </nz-layout>

@@ -11,31 +11,28 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 import { BibliaComponent } from './biblia.component';
 
-
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
+	imports: [
+		CommonModule,
+		FormsModule,
 
-        NzSelectModule,
-        NzTypographyModule,
-        NzIconModule,
-        NzCardModule,
-        NzBackTopModule,
-        NzButtonModule,
+		NzSelectModule,
+		NzTypographyModule,
+		NzIconModule,
+		NzCardModule,
+		NzBackTopModule,
+		NzButtonModule,
 
-        NzLayoutModule,
-        NzModalModule,
-        NzSwitchModule
-    ],
-    declarations: [
-        BibliaComponent
-    ],
-    exports: [
-        BibliaComponent
-    ]
+		NzLayoutModule,
+		NzModalModule,
+		NzSwitchModule,
+		NzPopconfirmModule,
+	],
+	declarations: [BibliaComponent],
+	exports: [BibliaComponent],
 })
-export class BibliaModule { }
+export class BibliaModule {}

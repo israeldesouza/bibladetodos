@@ -1,51 +1,88 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
-import *  as menuBiblia from '../biblia-json/menuBiblia.json';
-import *  as biblia from '../biblia-json/biblia.json';
-import { Biblia, UltimoLivroLido } from "./biblia";
-import { MenuBiblia } from "./biblia";
+import * as menuBiblia from '../biblia-json/menuBiblia.json';
+import * as biblia from '../biblia-json/biblia.json';
+import { IBiblia, IConfig, IUltimoLivroLido } from './biblia';
+import { IMenuBiblia } from './biblia';
 
+import Dexie from 'dexie';
 
 @Injectable()
 export class BibliaService {
+	private db!: Dexie;
+	private tableUltimoLivroLido!: Dexie.Table<IUltimoLivroLido>;
+	private tableLivros!: Dexie.Table<IBiblia>;
+	private tableConfig!: Dexie.Table<IConfig>;
 
-    constructor(){}
+	constructor() {
+		this.iniciarIndexdDb();
+	}
 
-    getMenuBiblia() : MenuBiblia[]{
-        const menuBibliaArray: any = menuBiblia;
-        return menuBibliaArray.default;
-    }
+	private iniciarIndexdDb() {
+		this.db = new Dexie('db-biblia');
+		this.db.version(1).stores({
+			ultimoLivro: 'nome',
+			livros: 'name',
+			config: 'config',
+		});
 
-    getLivroBiblia(index: number) : Biblia{
-        const bibliaArray: any = biblia;
-        return bibliaArray.default[index];
-    }
+		this.tableUltimoLivroLido = this.db.table('ultimoLivro');
+		this.tableLivros = this.db.table('livros');
+		this.tableConfig = this.db.table('config');
+	}
 
-    saveLivroLocal(livro: Biblia) {
-        localStorage.setItem(livro.name, JSON.stringify(livro));
-    }
+	getMenuBiblia(): IMenuBiblia[] {
+		const menuBibliaArray: any = menuBiblia;
+		return menuBibliaArray.default;
+	}
 
-    getLivroLocal(nomeLivro: string) {
-        const livro: any = localStorage.getItem(nomeLivro);
-        return JSON.parse(livro);
-    }
+	getLivroBiblia(index: number): IBiblia {
+		const bibliaArray: any = biblia;
+		return bibliaArray.default[index];
+	}
 
-    salvarUltimoLivroLido(ultimoLivro: UltimoLivroLido) {
-        localStorage.setItem('UltimoLivroLido', JSON.stringify(ultimoLivro));
-    }
+	saveLivro(livro: IBiblia) {
+		this.tableLivros.add(livro);
+	}
 
-    getUltimoLivroLido(){
-        const ultimoLivro: any = localStorage.getItem('UltimoLivroLido');
-        return JSON.parse(ultimoLivro);
-    }
+	updateLivro(livro: IBiblia) {
+		this.tableLivros.update(livro.name, livro);
+	}
 
-    salvarConfig(config: {fontSize: string, showComments: boolean, showVerses: boolean, changeConfig: boolean }){
-        localStorage.setItem('config', JSON.stringify(config));
-    }
+	getLivro(nomeLivro: string): Promise<IBiblia> | any {
+		return this.tableLivros.get({ name: nomeLivro });
+	}
 
-    getConfig(){
-        const config: any = localStorage.getItem('config');
-        return JSON.parse(config);
-    }
+	getUltimoLivroLido(): Promise<IUltimoLivroLido[]> {
+		return this.tableUltimoLivroLido.toArray();
+	}
 
+	salvarUltimoLivroLido(ultimoLivro: IUltimoLivroLido) {
+		this.tableUltimoLivroLido.add(ultimoLivro);
+	}
+
+	updateUltimoLivroLido(ultimoLivro: IUltimoLivroLido) {
+		this.getUltimoLivroLido().then((ultimoLivroLido) => {
+			this.tableUltimoLivroLido.update(
+				ultimoLivroLido[0].nome,
+				ultimoLivro
+			);
+		});
+	}
+
+	salvarConfig(config: IConfig) {
+		this.tableConfig.add(config);
+	}
+
+	updateConfig(config: IConfig) {
+		this.tableConfig.update(config.config, config);
+	}
+
+	getConfig(config: string) {
+		return this.tableConfig.get({ config: config });
+	}
+
+	deleteDataBase() {
+		Dexie.delete('db-biblia');
+	}
 }
