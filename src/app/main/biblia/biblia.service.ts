@@ -83,6 +83,6 @@ export class BibliaService {
 	}
 
 	deleteDataBase() {
-		Dexie.delete('db-biblia');
+		return Dexie.delete('db-biblia');
 	}
 }

@@ -51,8 +51,8 @@ export class BibliaComponent implements OnInit {
 			.getUltimoLivroLido()
 			.then((ultimoLido) => {
 				if (ultimoLido[0]) {
-					this.livroSelecionado = ultimoLido[0].nome;
 					this.ultimoLivro = ultimoLido[0];
+					this.livroSelecionado = ultimoLido[0].nome;
 					this.indexLivroSelesionado = this.ultimoLivro.indexLivro;
 					this.indexCapituloLivroSelesionado = this.ultimoLivro.indexCapitulo;
 					this.indexVersiculoSelesionado = this.ultimoLivro.indexVerso;
@@ -182,6 +182,7 @@ export class BibliaComponent implements OnInit {
 	salvarConfig() {
 		this.bibliaService.salvarConfig(this.config);
 	}
+
 	updateConfig() {
 		this.bibliaService.updateConfig(this.config);
 	}
@@ -246,6 +247,12 @@ export class BibliaComponent implements OnInit {
 	}
 
 	apagarDb() {
-		this.bibliaService.deleteDataBase();
+		this.bibliaService
+			.deleteDataBase()
+			.then(() => {
+				location.reload();
+				this.modalConfig = false;
+			})
+			.catch((e) => (this.modalConfig = false));
 	}
 }

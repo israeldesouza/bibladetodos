@@ -127,8 +127,7 @@
 								nzType="dashed"
 								nzDanger
 								nz-popconfirm
-								nzPopconfirmTitle="Está ação irá apagar todos os comentários e marcações, você tem certeza?"
-								[nzIcon]="iconTpl"
+								[nzPopconfirmTitle]="popTitleTpl"
 								(nzOnConfirm)="apagarDb()"
 							>
 								Excluir todos os dados
@@ -138,12 +137,19 @@
 									nzTheme="outline"
 								></i>
 							</button>
-							<ng-template #iconTpl>
+							<ng-template #popTitleTpl>
 								<i
 									nz-icon
 									nzType="question-circle-o"
 									style="color: red"
-								></i>
+								>
+								</i
+								>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span style="font-weight: 600">
+									Está ação irá apagar todos os comentários e
+									marcações,<br />
+									você tem certeza?
+								</span>
 							</ng-template>
 						</div>
 					</div>
